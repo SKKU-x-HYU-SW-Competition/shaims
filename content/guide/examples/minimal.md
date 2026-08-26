@@ -5,7 +5,7 @@
 
 ## JavaScript
 
-`src/code-here/Minimal_v1.js`:
+`src/code-here/Minimal.js`:
 
 ```js
 'use strict';
@@ -17,7 +17,7 @@ function decide(s) {
 
 ## Python
 
-`src/code-here/Minimal_v1.py`:
+`src/code-here/Minimal.py`:
 
 ```python
 def decide(s):
@@ -36,9 +36,9 @@ def decide(s):
 
 ## 지금 바로 해보기
 
-1. 위 코드 중 하나를 `src/code-here/Minimal_v1.js` (또는 `.py`)로 저장
+1. 위 코드 중 하나를 `src/code-here/Minimal.js` (또는 `.py`)로 저장
 2. `npm start`가 이미 돌고 있다면 그대로, 아니면 실행
-3. "봇 설정" → LEFT를 **Bot**으로, 드롭다운에서 `Minimal v1 (JS)` 선택
+3. "봇 설정" → LEFT를 **Bot**으로, 드롭다운에서 `Minimal (JS)` 선택
    → RIGHT는 **AI**로 → **적용(재시작)**
 4. 내장 AI가 서브를 넣고, 우리 Minimal 봇은 가만히 있다가 공에 맞습니다.
 

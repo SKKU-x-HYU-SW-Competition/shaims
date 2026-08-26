@@ -36,7 +36,7 @@
 
 ## JavaScript
 
-`src/code-here/PowerHit_v1.js`:
+`src/code-here/PowerHit.js`:
 
 ```js
 'use strict';
@@ -81,7 +81,7 @@ function decide(s) {
 
 ## Python
 
-`src/code-here/PowerHit_v1.py`:
+`src/code-here/PowerHit.py`:
 
 ```python
 def decide(s):
@@ -137,9 +137,9 @@ state 0 (착지 후)
 
 ## 붙여보기
 
-- `PowerHit v1` vs `AI`: 내장 AI와 어느 정도 비슷하게 겨룹니다.
-- `PowerHit v1` vs `Positioning v1`: 파워히트가 있는 쪽이 공격 기회를 많이 가져갑니다.
-- `PowerHit v1` vs `PowerHit v1` (같은 파일을 양쪽에): 대칭이라 특정 스코어에서
+- `PowerHit` vs `AI`: 내장 AI와 어느 정도 비슷하게 겨룹니다.
+- `PowerHit` vs `Positioning`: 파워히트가 있는 쪽이 공격 기회를 많이 가져갑니다.
+- `PowerHit` vs `PowerHit` (같은 파일을 양쪽에): 대칭이라 특정 스코어에서
   랠리가 길어지는 경우가 자주 보입니다.
 
 ## 여기서부터는 여러분의 몫

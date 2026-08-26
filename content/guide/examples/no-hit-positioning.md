@@ -41,7 +41,7 @@
 
 ## JavaScript
 
-`src/code-here/Positioning_v1.js`:
+`src/code-here/Positioning.js`:
 
 ```js
 'use strict';
@@ -98,7 +98,7 @@ function decide(s) {
 
 ## Python
 
-`src/code-here/Positioning_v1.py`:
+`src/code-here/Positioning.py`:
 
 ```python
 def decide(s):
@@ -144,9 +144,9 @@ def decide(s):
 
 ## 붙여보기
 
-- `Positioning v1` vs `AI`: 내장 AI 상대로 몇 랠리는 살아남을 겁니다. 다만
+- `Positioning` vs `AI`: 내장 AI 상대로 몇 랠리는 살아남을 겁니다. 다만
   파워히트가 없어서 결국 잘 조준된 스매시엔 밀립니다.
-- `Positioning v1` vs `Minimal v1`: 완승. 뼈대만 있는 봇은 아예 못 움직이니까요.
+- `Positioning` vs `Minimal`: 완승. 뼈대만 있는 봇은 아예 못 움직이니까요.
 
 ## 다음 단계
 

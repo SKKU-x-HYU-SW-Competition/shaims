@@ -213,8 +213,8 @@ function MatchRow({ match, disabled }: { match: Match; disabled: boolean }) {
   }
 
   return (
-    <li className="grid grid-cols-[1fr_auto_1fr_auto_auto] items-center gap-2 rounded-md border px-3 py-1.5 text-sm">
-      <span className="text-right pr-1">{match.homeUser.teamName}</span>
+    <li className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_auto] items-center gap-2 rounded-md border px-3 py-1.5 text-sm">
+      <span className="min-w-0 truncate text-right pr-1">{match.homeUser.teamName}</span>
       <div className="flex items-center gap-1">
         <Input
           type="number"
@@ -222,7 +222,7 @@ function MatchRow({ match, disabled }: { match: Match; disabled: boolean }) {
           value={home}
           onChange={(e) => setHome(e.target.value)}
           disabled={disabled || busy}
-          className="h-8 w-14 text-center"
+          className="h-8 w-12 text-center px-1"
         />
         <span className="text-zinc-400">:</span>
         <Input
@@ -231,10 +231,10 @@ function MatchRow({ match, disabled }: { match: Match; disabled: boolean }) {
           value={away}
           onChange={(e) => setAway(e.target.value)}
           disabled={disabled || busy}
-          className="h-8 w-14 text-center"
+          className="h-8 w-12 text-center px-1"
         />
       </div>
-      <span className="pl-1">{match.awayUser.teamName}</span>
+      <span className="min-w-0 truncate pl-1">{match.awayUser.teamName}</span>
       <Button
         variant="outline"
         size="sm"
@@ -307,13 +307,13 @@ function AddMatchForm({
   return (
     <form
       onSubmit={onAdd}
-      className="mt-2 grid grid-cols-[1fr_auto_1fr_auto] items-center gap-2 rounded-md border border-dashed px-3 py-2 text-sm"
+      className="mt-2 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto] items-center gap-2 rounded-md border border-dashed px-3 py-2 text-sm"
     >
       <select
         value={homeId}
         onChange={(e) => setHomeId(e.target.value)}
         disabled={busy}
-        className="h-8 rounded-md border border-input bg-transparent px-2 text-sm"
+        className="h-8 min-w-0 w-full rounded-md border border-input bg-transparent px-2 text-sm"
         aria-label="홈 팀"
       >
         <option value="">홈 팀</option>
@@ -330,7 +330,7 @@ function AddMatchForm({
           value={home}
           onChange={(e) => setHome(e.target.value)}
           disabled={busy}
-          className="h-8 w-14 text-center"
+          className="h-8 w-12 text-center px-1"
           placeholder="-"
         />
         <span className="text-zinc-400">:</span>
@@ -340,7 +340,7 @@ function AddMatchForm({
           value={away}
           onChange={(e) => setAway(e.target.value)}
           disabled={busy}
-          className="h-8 w-14 text-center"
+          className="h-8 w-12 text-center px-1"
           placeholder="-"
         />
       </div>
@@ -348,7 +348,7 @@ function AddMatchForm({
         value={awayId}
         onChange={(e) => setAwayId(e.target.value)}
         disabled={busy}
-        className="h-8 rounded-md border border-input bg-transparent px-2 text-sm"
+        className="h-8 min-w-0 w-full rounded-md border border-input bg-transparent px-2 text-sm"
         aria-label="원정 팀"
       >
         <option value="">원정 팀</option>
@@ -358,9 +358,13 @@ function AddMatchForm({
           </option>
         ))}
       </select>
-      <Button type="submit" size="sm" disabled={busy || !homeId || !awayId}>
+      <Button
+        type="submit"
+        size="sm"
+        disabled={busy || !homeId || !awayId}
+        aria-label="매치 추가"
+      >
         <Plus className="size-4" />
-        추가
       </Button>
     </form>
   );

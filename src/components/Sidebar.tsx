@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
-import { BookOpen, FileCode, Trophy, Users } from "lucide-react";
+import { BookOpen, Eye, FileCode, Trophy, Users } from "lucide-react";
 import type { Role } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { LogoutButton } from "./LogoutButton";
@@ -20,6 +20,7 @@ const MENU: MenuItem[] = [
   { href: "/brackets", label: "대진", icon: Trophy, roles: ["PARTICIPANT"] },
   { href: "/admin/submissions", label: "제출 관리", icon: FileCode, roles: ["ADMIN"] },
   { href: "/admin/brackets", label: "대진 관리", icon: Trophy, roles: ["ADMIN"] },
+  { href: "/brackets", label: "대진 (참가자 뷰)", icon: Eye, roles: ["ADMIN"] },
   { href: "/admin/teams", label: "팀 관리", icon: Users, roles: ["ADMIN"] },
   { href: "/guide", label: "가이드", icon: BookOpen, roles: ["ADMIN", "PARTICIPANT"] },
 ];
@@ -34,7 +35,7 @@ export function Sidebar({ role, teamName }: Props) {
   const items = MENU.filter((m) => m.roles.includes(role));
 
   return (
-    <aside className="w-60 shrink-0 border-r bg-white flex flex-col">
+    <aside className="w-60 shrink-0 border-r bg-white flex flex-col sticky top-0 h-screen">
       <div className="px-5 py-5 border-b">
         <p className="text-xs font-medium text-zinc-500">2026 CSE 교류전</p>
         <p className="text-base font-semibold text-zinc-900">AI 대회</p>

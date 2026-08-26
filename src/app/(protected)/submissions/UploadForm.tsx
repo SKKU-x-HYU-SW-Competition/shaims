@@ -4,7 +4,7 @@ import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import {
   ALLOWED_EXTENSIONS,
   MAX_UPLOAD_BYTES,
@@ -68,21 +68,62 @@ export function UploadForm() {
 
   return (
     <form onSubmit={onSubmit} className="grid gap-3">
-      <Input
-        ref={inputRef}
-        type="file"
-        accept=".js,.py"
-        onChange={onFileChange}
-        disabled={uploading}
-      />
-      <p className="text-xs text-zinc-500">
-        .js 또는 .py 파일, 최대 {formatBytes(MAX_UPLOAD_BYTES)}.
-      </p>
+      <div className="flex items-center gap-3">
+        <label
+          htmlFor="submission-file"
+          className={cn(
+            "inline-flex h-9 items-center rounded-md bg-zinc-900 px-4 text-sm font-medium text-white cursor-pointer hover:bg-zinc-800 transition-colors",
+            uploading && "pointer-events-none opacity-50",
+          )}
+        >
+          파일 선택
+        </label>
+        <input
+          id="submission-file"
+          ref={inputRef}
+          type="file"
+          accept=".js,.py"
+          onChange={onFileChange}
+          disabled={uploading}
+          className="sr-only"
+        />
+        <span
+          className={cn(
+            "text-sm truncate",
+            file ? "text-zinc-900" : "text-zinc-400 italic",
+          )}
+        >
+          {file?.name ?? "선택된 파일 없음"}
+        </span>
+      </div>
+
+      <div className="text-xs text-zinc-500 space-y-1">
+        <p>
+          파일명은 <b>팀명과 확장자</b>로 해주세요 (예:{" "}
+          <code className="rounded bg-zinc-100 px-1 py-0.5 text-zinc-700">
+            teamA.js
+          </code>
+          ,{" "}
+          <code className="rounded bg-zinc-100 px-1 py-0.5 text-zinc-700">
+            teamB.py
+          </code>
+          ). 저장 시 자동으로{" "}
+          <code className="rounded bg-zinc-100 px-1 py-0.5 text-zinc-700">
+            _v버전
+          </code>
+          이 붙어 내역에 표시됩니다.
+        </p>
+        <p>
+          허용 확장자: .js 또는 .py · 최대 {formatBytes(MAX_UPLOAD_BYTES)}
+        </p>
+      </div>
+
       {error && (
         <p className="text-sm text-red-600" role="alert">
           {error}
         </p>
       )}
+
       <Button
         type="submit"
         disabled={!file || uploading}

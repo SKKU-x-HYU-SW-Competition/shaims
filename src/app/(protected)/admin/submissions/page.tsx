@@ -78,8 +78,7 @@ export default async function AdminSubmissionsPage() {
                     </TableCell>
                     <TableCell className="text-right">
                       <a
-                        href={s.fileUrl}
-                        download={s.fileName}
+                        href={`/api/submissions/${s.id}/download`}
                         className="text-sm text-zinc-700 underline hover:text-zinc-900 mr-2"
                       >
                         다운로드

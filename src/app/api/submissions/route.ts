@@ -6,6 +6,7 @@ import {
   MAX_UPLOAD_BYTES,
   getExtension,
   isAllowedExtension,
+  sanitizeForFileName,
 } from "@/lib/submissions";
 
 export async function POST(req: Request) {
@@ -36,7 +37,13 @@ export async function POST(req: Request) {
     );
   }
 
-  const blob = await put(`submissions/${user.userId}/${file.name}`, file, {
+  const existingCount = await prisma.submission.count({
+    where: { userId: user.userId },
+  });
+  const nextVersion = existingCount + 1;
+  const displayName = `${sanitizeForFileName(user.teamName)}_v${nextVersion}.${ext}`;
+
+  const blob = await put(`submissions/${user.userId}/${displayName}`, file, {
     access: "public",
     addRandomSuffix: true,
     contentType: file.type || "text/plain",
@@ -45,7 +52,7 @@ export async function POST(req: Request) {
   const submission = await prisma.submission.create({
     data: {
       userId: user.userId,
-      fileName: file.name,
+      fileName: displayName,
       fileUrl: blob.url,
       fileSize: file.size,
       language: ext,

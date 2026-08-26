@@ -18,7 +18,13 @@ model User {
   passwordHash String
   role         Role         @default(PARTICIPANT)
   createdAt    DateTime     @default(now())
+  groupId      String?
+  group        Group?       @relation(fields: [groupId], references: [id], onDelete: SetNull)
   submissions  Submission[]
+  homeMatches  GroupMatch[] @relation("GroupHome")
+  awayMatches  GroupMatch[] @relation("GroupAway")
+
+  @@index([groupId])
 }
 
 model Submission {
@@ -33,4 +39,31 @@ model Submission {
 
   @@index([userId])
   @@index([createdAt])
+}
+
+model Group {
+  id        String       @id @default(cuid())
+  name      String       @unique
+  order     Int          @default(0)
+  createdAt DateTime     @default(now())
+  users     User[]
+  matches   GroupMatch[]
+}
+
+model GroupMatch {
+  id         String    @id @default(cuid())
+  groupId    String
+  group      Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  homeUserId String
+  homeUser   User      @relation("GroupHome", fields: [homeUserId], references: [id], onDelete: Cascade)
+  awayUserId String
+  awayUser   User      @relation("GroupAway", fields: [awayUserId], references: [id], onDelete: Cascade)
+  homeScore  Int?
+  awayScore  Int?
+  playedAt   DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([groupId])
+  @@index([homeUserId])
+  @@index([awayUserId])
 }

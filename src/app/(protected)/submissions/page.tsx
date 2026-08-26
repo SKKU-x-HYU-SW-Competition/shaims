@@ -43,7 +43,7 @@ export default async function ParticipantSubmissionsPage() {
         <CardHeader>
           <CardTitle>새 코드 업로드</CardTitle>
           <CardDescription>
-            최신 제출본이 대회 채점에 사용됩니다.
+            최신 제출본이 대전에 사용됩니다.
           </CardDescription>
         </CardHeader>
         <CardContent>

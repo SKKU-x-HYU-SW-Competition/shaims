@@ -20,13 +20,6 @@ export async function PATCH(
   }
 
   const { homeScore, awayScore } = parsed.data;
-  if (homeScore !== null && awayScore !== null && homeScore === awayScore) {
-    return NextResponse.json(
-      { error: "무승부는 허용되지 않습니다." },
-      { status: 400 },
-    );
-  }
-
   const bothSet = homeScore !== null && awayScore !== null;
 
   const match = await prisma.groupMatch.update({

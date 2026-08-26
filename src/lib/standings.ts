@@ -3,6 +3,7 @@ export type StandingRow = {
   teamName: string;
   played: number;
   wins: number;
+  draws: number;
   losses: number;
   gf: number;
   ga: number;
@@ -29,6 +30,7 @@ export function computeStandings(
       teamName: u.teamName,
       played: 0,
       wins: 0,
+      draws: 0,
       losses: 0,
       gf: 0,
       ga: 0,
@@ -53,11 +55,14 @@ export function computeStandings(
     } else if (m.homeScore < m.awayScore) {
       away.wins += 1;
       home.losses += 1;
+    } else {
+      home.draws += 1;
+      away.draws += 1;
     }
   }
   for (const r of rows.values()) {
     r.gd = r.gf - r.ga;
-    r.points = r.wins * 3;
+    r.points = r.wins * 3 + r.draws;
   }
   return [...rows.values()].sort(
     (a, b) =>

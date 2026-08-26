@@ -178,10 +178,6 @@ function MatchRow({ match, disabled }: { match: Match; disabled: boolean }) {
     const a = away === "" ? null : Number(away);
     if (h !== null && (Number.isNaN(h) || h < 0)) return alert("점수 오류");
     if (a !== null && (Number.isNaN(a) || a < 0)) return alert("점수 오류");
-    if (h !== null && a !== null && h === a) {
-      alert("무승부는 허용되지 않습니다.");
-      return;
-    }
     setBusy(true);
     const res = await fetch(`/api/admin/group-matches/${match.id}`, {
       method: "PATCH",
@@ -284,10 +280,6 @@ function AddMatchForm({
     }
     const h = home === "" ? null : Number(home);
     const a = away === "" ? null : Number(away);
-    if (h !== null && a !== null && h === a) {
-      alert("무승부는 허용되지 않습니다.");
-      return;
-    }
     setBusy(true);
     const res = await fetch(`/api/admin/groups/${groupId}/matches`, {
       method: "POST",

@@ -102,6 +102,9 @@ export default async function BracketsPage() {
                                   W
                                 </TableHead>
                                 <TableHead className="w-10 text-right">
+                                  D
+                                </TableHead>
+                                <TableHead className="w-10 text-right">
                                   L
                                 </TableHead>
                                 <TableHead className="w-12 text-right">
@@ -142,6 +145,9 @@ export default async function BracketsPage() {
                                     </TableCell>
                                     <TableCell className="text-right tabular-nums">
                                       {s.wins}
+                                    </TableCell>
+                                    <TableCell className="text-right tabular-nums">
+                                      {s.draws}
                                     </TableCell>
                                     <TableCell className="text-right tabular-nums">
                                       {s.losses}

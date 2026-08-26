@@ -40,9 +40,6 @@ export async function POST(
 
   const h = homeScore ?? null;
   const a = awayScore ?? null;
-  if (h !== null && a !== null && h === a) {
-    return NextResponse.json({ error: "무승부는 허용되지 않습니다." }, { status: 400 });
-  }
   const bothSet = h !== null && a !== null;
 
   const match = await prisma.groupMatch.create({

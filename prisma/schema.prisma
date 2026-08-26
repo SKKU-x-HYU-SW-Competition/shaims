@@ -13,16 +13,18 @@ enum Role {
 }
 
 model User {
-  id           String       @id @default(cuid())
-  teamName     String       @unique
-  passwordHash String
-  role         Role         @default(PARTICIPANT)
-  createdAt    DateTime     @default(now())
-  groupId      String?
-  group        Group?       @relation(fields: [groupId], references: [id], onDelete: SetNull)
-  submissions  Submission[]
-  homeMatches  GroupMatch[] @relation("GroupHome")
-  awayMatches  GroupMatch[] @relation("GroupAway")
+  id                  String          @id @default(cuid())
+  teamName            String          @unique
+  passwordHash        String
+  role                Role            @default(PARTICIPANT)
+  createdAt           DateTime        @default(now())
+  groupId             String?
+  group               Group?          @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  submissions         Submission[]
+  homeMatches         GroupMatch[]    @relation("GroupHome")
+  awayMatches         GroupMatch[]    @relation("GroupAway")
+  knockoutHomeMatches KnockoutMatch[] @relation("KOHome")
+  knockoutAwayMatches KnockoutMatch[] @relation("KOAway")
 
   @@index([groupId])
 }
@@ -64,6 +66,25 @@ model GroupMatch {
   createdAt  DateTime  @default(now())
 
   @@index([groupId])
+  @@index([homeUserId])
+  @@index([awayUserId])
+}
+
+model KnockoutMatch {
+  id           String    @id @default(cuid())
+  round        Int
+  slot         Int
+  isThirdPlace Boolean   @default(false)
+  homeUserId   String?
+  homeUser     User?     @relation("KOHome", fields: [homeUserId], references: [id], onDelete: SetNull)
+  awayUserId   String?
+  awayUser     User?     @relation("KOAway", fields: [awayUserId], references: [id], onDelete: SetNull)
+  homeScore    Int?
+  awayScore    Int?
+  playedAt     DateTime?
+  createdAt    DateTime  @default(now())
+
+  @@unique([round, slot, isThirdPlace])
   @@index([homeUserId])
   @@index([awayUserId])
 }

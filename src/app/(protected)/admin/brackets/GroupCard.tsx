@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { RefreshCcw, Trash2, X } from "lucide-react";
+import { Plus, RefreshCcw, Trash2, X } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -147,7 +147,8 @@ export function GroupCard({ group }: { group: Group }) {
           </h4>
           {group.matches.length === 0 ? (
             <p className="text-sm text-zinc-500">
-              팀 배정 후 &quot;매치 생성&quot; 을 눌러 라운드로빈을 생성하세요.
+              팀 배정 후 &quot;매치 생성&quot; 으로 1바퀴 라운드로빈을 만들거나,
+              아래에서 매치를 하나씩 추가할 수 있습니다.
             </p>
           ) : (
             <ul className="space-y-1">
@@ -155,6 +156,9 @@ export function GroupCard({ group }: { group: Group }) {
                 <MatchRow key={m.id} match={m} disabled={busy} />
               ))}
             </ul>
+          )}
+          {group.users.length >= 2 && (
+            <AddMatchForm groupId={group.id} teams={group.users} />
           )}
         </section>
       </CardContent>
@@ -193,8 +197,27 @@ function MatchRow({ match, disabled }: { match: Match; disabled: boolean }) {
     startTransition(() => router.refresh());
   }
 
+  async function remove() {
+    if (
+      !confirm(
+        `"${match.homeUser.teamName} vs ${match.awayUser.teamName}" 매치를 삭제할까요?`,
+      )
+    )
+      return;
+    setBusy(true);
+    const res = await fetch(`/api/admin/group-matches/${match.id}`, {
+      method: "DELETE",
+    });
+    setBusy(false);
+    if (!res.ok) {
+      alert("삭제에 실패했습니다.");
+      return;
+    }
+    startTransition(() => router.refresh());
+  }
+
   return (
-    <li className="grid grid-cols-[1fr_auto_1fr_auto] items-center gap-2 rounded-md border px-3 py-1.5 text-sm">
+    <li className="grid grid-cols-[1fr_auto_1fr_auto_auto] items-center gap-2 rounded-md border px-3 py-1.5 text-sm">
       <span className="text-right pr-1">{match.homeUser.teamName}</span>
       <div className="flex items-center gap-1">
         <Input
@@ -224,6 +247,129 @@ function MatchRow({ match, disabled }: { match: Match; disabled: boolean }) {
       >
         저장
       </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={remove}
+        disabled={disabled || busy}
+        aria-label="매치 삭제"
+      >
+        <Trash2 className="size-4" />
+      </Button>
     </li>
+  );
+}
+
+function AddMatchForm({
+  groupId,
+  teams,
+}: {
+  groupId: string;
+  teams: Team[];
+}) {
+  const router = useRouter();
+  const [homeId, setHomeId] = useState("");
+  const [awayId, setAwayId] = useState("");
+  const [home, setHome] = useState("");
+  const [away, setAway] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [, startTransition] = useTransition();
+
+  async function onAdd(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!homeId || !awayId) return;
+    if (homeId === awayId) {
+      alert("같은 팀끼리 배정할 수 없습니다.");
+      return;
+    }
+    const h = home === "" ? null : Number(home);
+    const a = away === "" ? null : Number(away);
+    if (h !== null && a !== null && h === a) {
+      alert("무승부는 허용되지 않습니다.");
+      return;
+    }
+    setBusy(true);
+    const res = await fetch(`/api/admin/groups/${groupId}/matches`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        homeUserId: homeId,
+        awayUserId: awayId,
+        homeScore: h,
+        awayScore: a,
+      }),
+    });
+    setBusy(false);
+    if (!res.ok) {
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      alert(data.error ?? "추가 실패");
+      return;
+    }
+    setHomeId("");
+    setAwayId("");
+    setHome("");
+    setAway("");
+    startTransition(() => router.refresh());
+  }
+
+  return (
+    <form
+      onSubmit={onAdd}
+      className="mt-2 grid grid-cols-[1fr_auto_1fr_auto] items-center gap-2 rounded-md border border-dashed px-3 py-2 text-sm"
+    >
+      <select
+        value={homeId}
+        onChange={(e) => setHomeId(e.target.value)}
+        disabled={busy}
+        className="h-8 rounded-md border border-input bg-transparent px-2 text-sm"
+        aria-label="홈 팀"
+      >
+        <option value="">홈 팀</option>
+        {teams.map((t) => (
+          <option key={t.id} value={t.id}>
+            {t.teamName}
+          </option>
+        ))}
+      </select>
+      <div className="flex items-center gap-1">
+        <Input
+          type="number"
+          min={0}
+          value={home}
+          onChange={(e) => setHome(e.target.value)}
+          disabled={busy}
+          className="h-8 w-14 text-center"
+          placeholder="-"
+        />
+        <span className="text-zinc-400">:</span>
+        <Input
+          type="number"
+          min={0}
+          value={away}
+          onChange={(e) => setAway(e.target.value)}
+          disabled={busy}
+          className="h-8 w-14 text-center"
+          placeholder="-"
+        />
+      </div>
+      <select
+        value={awayId}
+        onChange={(e) => setAwayId(e.target.value)}
+        disabled={busy}
+        className="h-8 rounded-md border border-input bg-transparent px-2 text-sm"
+        aria-label="원정 팀"
+      >
+        <option value="">원정 팀</option>
+        {teams.map((t) => (
+          <option key={t.id} value={t.id}>
+            {t.teamName}
+          </option>
+        ))}
+      </select>
+      <Button type="submit" size="sm" disabled={busy || !homeId || !awayId}>
+        <Plus className="size-4" />
+        추가
+      </Button>
+    </form>
   );
 }

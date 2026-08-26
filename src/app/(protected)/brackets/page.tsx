@@ -17,26 +17,36 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { computeStandings } from "@/lib/standings";
 import { requireUser } from "@/lib/auth";
+import { KnockoutView } from "./KnockoutView";
 
 export const dynamic = "force-dynamic";
 
 export default async function BracketsPage() {
   const me = await requireUser();
-  const groups = await prisma.group.findMany({
-    orderBy: [{ order: "asc" }, { name: "asc" }],
-    include: {
-      users: {
-        select: { id: true, teamName: true },
-      },
-      matches: {
-        include: {
-          homeUser: { select: { teamName: true } },
-          awayUser: { select: { teamName: true } },
+  const [groups, knockoutMatches] = await Promise.all([
+    prisma.group.findMany({
+      orderBy: [{ order: "asc" }, { name: "asc" }],
+      include: {
+        users: {
+          select: { id: true, teamName: true },
         },
-        orderBy: { createdAt: "asc" },
+        matches: {
+          include: {
+            homeUser: { select: { teamName: true } },
+            awayUser: { select: { teamName: true } },
+          },
+          orderBy: { createdAt: "asc" },
+        },
       },
-    },
-  });
+    }),
+    prisma.knockoutMatch.findMany({
+      orderBy: [{ isThirdPlace: "asc" }, { round: "asc" }, { slot: "asc" }],
+      include: {
+        homeUser: { select: { teamName: true } },
+        awayUser: { select: { teamName: true } },
+      },
+    }),
+  ]);
 
   return (
     <div className="space-y-6">
@@ -190,11 +200,14 @@ export default async function BracketsPage() {
         <TabsContent value="knockout">
           <Card>
             <CardHeader>
-              <CardTitle>본선 (토너먼트)</CardTitle>
+              <CardTitle>본선 토너먼트</CardTitle>
               <CardDescription>
-                Phase 4c에서 브래킷 트리가 여기에 표시됩니다.
+                결과가 확정된 매치는 승자 이름이 강조됩니다.
               </CardDescription>
             </CardHeader>
+            <CardContent>
+              <KnockoutView matches={knockoutMatches} meUserId={me.userId} />
+            </CardContent>
           </Card>
         </TabsContent>
       </Tabs>

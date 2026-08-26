@@ -10,11 +10,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { NewGroupForm } from "./NewGroupForm";
 import { AssignTeamsPanel } from "./AssignTeamsPanel";
 import { GroupCard } from "./GroupCard";
+import { KnockoutAdmin } from "./KnockoutAdmin";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminBracketsPage() {
-  const [groups, unassigned] = await Promise.all([
+  const [groups, unassigned, knockoutMatches, participants] = await Promise.all([
     prisma.group.findMany({
       orderBy: [{ order: "asc" }, { name: "asc" }],
       include: {
@@ -33,6 +34,18 @@ export default async function AdminBracketsPage() {
     }),
     prisma.user.findMany({
       where: { role: "PARTICIPANT", groupId: null },
+      select: { id: true, teamName: true },
+      orderBy: { teamName: "asc" },
+    }),
+    prisma.knockoutMatch.findMany({
+      orderBy: [{ isThirdPlace: "asc" }, { round: "asc" }, { slot: "asc" }],
+      include: {
+        homeUser: { select: { teamName: true } },
+        awayUser: { select: { teamName: true } },
+      },
+    }),
+    prisma.user.findMany({
+      where: { role: "PARTICIPANT" },
       select: { id: true, teamName: true },
       orderBy: { teamName: "asc" },
     }),
@@ -101,11 +114,18 @@ export default async function AdminBracketsPage() {
         <TabsContent value="knockout">
           <Card>
             <CardHeader>
-              <CardTitle>본선 (토너먼트)</CardTitle>
+              <CardTitle>본선 토너먼트</CardTitle>
               <CardDescription>
-                Phase 4c에서 브래킷 생성/점수 입력 UI가 여기에 붙습니다.
+                브래킷 크기를 정해 생성한 뒤 각 매치에 팀과 점수를 입력하세요.
+                진출자는 관리자가 직접 다음 라운드에 배치합니다.
               </CardDescription>
             </CardHeader>
+            <CardContent>
+              <KnockoutAdmin
+                matches={knockoutMatches}
+                participants={participants}
+              />
+            </CardContent>
           </Card>
         </TabsContent>
       </Tabs>

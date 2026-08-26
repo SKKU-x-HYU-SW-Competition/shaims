@@ -40,3 +40,13 @@ export async function PATCH(
 
   return NextResponse.json({ ok: true, match });
 }
+
+export async function DELETE(
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  await requireAdmin();
+  const { id } = await params;
+  await prisma.groupMatch.delete({ where: { id } });
+  return NextResponse.json({ ok: true });
+}

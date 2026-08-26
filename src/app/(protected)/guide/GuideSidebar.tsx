@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export function GuideSidebar() {
   const pathname = usePathname();
   return (
-    <nav className="w-48 shrink-0 space-y-5 text-sm">
+    <nav className="space-y-5 text-sm">
       {GUIDE_TREE.map((g) => (
         <div key={g.group}>
           <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1 px-2">

@@ -11,7 +11,8 @@
 `decide(snapshot)` 함수가 조작을 대신합니다.
 
 - **언어**: JavaScript 또는 Python (원하는 쪽 하나만 짜면 됩니다)
-- **결과물**: 파일 한 개 — `TeamName.js` 또는 `TeamName.py` (제출 시 서버가 자동으로 버전 번호를 붙입니다)
+- **결과물**: 파일 한 개 — `<팀명>_v<버전>.<js|py>` (예: `Alpha_v1.js`).
+  자세한 건 [환경 세팅](getting-started.md) 참고
 - **함수 하나만 정의하면 됨**: `decide(snapshot) → { x, y, hit }`
 
 ## 최소 예시

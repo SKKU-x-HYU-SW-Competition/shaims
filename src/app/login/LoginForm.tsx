@@ -44,9 +44,7 @@ export function LoginForm() {
     }
 
     startTransition(() => {
-      router.replace(
-        data.role === "ADMIN" ? "/admin/submissions" : "/submissions",
-      );
+      router.replace("/");
       router.refresh();
     });
   }

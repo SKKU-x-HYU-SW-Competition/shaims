@@ -22,6 +22,6 @@ export async function requireUser(): Promise<SessionPayload> {
 
 export async function requireAdmin(): Promise<SessionPayload> {
   const user = await requireUser();
-  if (user.role !== "ADMIN") redirect("/submissions");
+  if (user.role !== "ADMIN") redirect("/");
   return user;
 }

@@ -88,3 +88,21 @@ model KnockoutMatch {
   @@index([homeUserId])
   @@index([awayUserId])
 }
+
+model HomeContent {
+  id        String   @id @default("main")
+  title     String
+  subtitle  String
+  updatedAt DateTime @updatedAt
+}
+
+model HomeLink {
+  id          String   @id @default(cuid())
+  label       String
+  url         String
+  description String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([order])
+}

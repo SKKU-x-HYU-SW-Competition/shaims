@@ -23,7 +23,7 @@ export async function proxy(req: NextRequest) {
 
   if (pathname.startsWith("/admin") && session.role !== "ADMIN") {
     const url = req.nextUrl.clone();
-    url.pathname = "/submissions";
+    url.pathname = "/";
     return NextResponse.redirect(url);
   }
 

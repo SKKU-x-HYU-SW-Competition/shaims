@@ -5,7 +5,7 @@ import { LoginForm } from "./LoginForm";
 export default async function LoginPage() {
   const session = await getSession();
   if (session.userId) {
-    redirect(session.role === "ADMIN" ? "/admin/submissions" : "/submissions");
+    redirect("/");
   }
   return (
     <main className="flex flex-1 items-center justify-center p-6">

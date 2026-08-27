@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
-import { BookOpen, Eye, FileCode, Trophy, Users } from "lucide-react";
+import { BookOpen, Eye, FileCode, Home, Trophy, Users } from "lucide-react";
 import type { Role } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { LogoutButton } from "./LogoutButton";
@@ -16,6 +16,7 @@ type MenuItem = {
 };
 
 const MENU: MenuItem[] = [
+  { href: "/", label: "홈", icon: Home, roles: ["ADMIN", "PARTICIPANT"] },
   { href: "/submissions", label: "코드 제출", icon: FileCode, roles: ["PARTICIPANT"] },
   { href: "/brackets", label: "대진", icon: Trophy, roles: ["PARTICIPANT"] },
   { href: "/admin/submissions", label: "제출 관리", icon: FileCode, roles: ["ADMIN"] },

@@ -5,22 +5,36 @@
 
 ## JavaScript
 
-`src/code-here/Minimal.js`:
+`src/code-here/Minimal_v1.js`:
 
 ```js
 'use strict';
 
+// 봇이 매 tick(3프레임 = 120ms) 한 번씩 호출되는 함수.
+// 반환값 { x, y, hit } 세 필드가 그 tick 동안의 조작을 결정합니다.
+//   x   : -1 왼쪽 / 0 가만히 / 1 오른쪽
+//   y   : -1 위(점프) / 0 가만히 / 1 아래(다이빙)
+//   hit :  0 안 함 / 1 파워히트(또는 다이빙 트리거)
 function decide(s) {
+  // 아무 판단도 안 하고 항상 "가만히 있음"만 반환합니다.
+  // 그래서 이 봇은 서브를 받지도, 공을 되받지도 않고 그대로 실점합니다.
   return { x: 0, y: 0, hit: 0 };
 }
 ```
 
 ## Python
 
-`src/code-here/Minimal.py`:
+`src/code-here/Minimal_v1.py`:
 
 ```python
+# 봇이 매 tick(3프레임 = 120ms) 한 번씩 호출되는 함수.
+# 반환 dict의 세 키가 그 tick 동안의 조작을 결정합니다.
+#   'x'   : -1 왼쪽 / 0 가만히 / 1 오른쪽
+#   'y'   : -1 위(점프) / 0 가만히 / 1 아래(다이빙)
+#   'hit' :  0 안 함 / 1 파워히트(또는 다이빙 트리거)
 def decide(s):
+    # 아무 판단도 안 하고 항상 "가만히 있음"만 반환합니다.
+    # 그래서 이 봇은 서브를 받지도, 공을 되받지도 않고 그대로 실점합니다.
     return {'x': 0, 'y': 0, 'hit': 0}
 ```
 
@@ -36,9 +50,9 @@ def decide(s):
 
 ## 지금 바로 해보기
 
-1. 위 코드 중 하나를 `src/code-here/Minimal.js` (또는 `.py`)로 저장
+1. 위 코드 중 하나를 `src/code-here/Minimal_v1.js` (또는 `.py`)로 저장
 2. `npm start`가 이미 돌고 있다면 그대로, 아니면 실행
-3. "봇 설정" → LEFT를 **Bot**으로, 드롭다운에서 `Minimal (JS)` 선택
+3. "봇 설정" → LEFT를 **Bot**으로, 드롭다운에서 `Minimal v1 (JS)` 선택
    → RIGHT는 **AI**로 → **적용(재시작)**
 4. 내장 AI가 서브를 넣고, 우리 Minimal 봇은 가만히 있다가 공에 맞습니다.
 

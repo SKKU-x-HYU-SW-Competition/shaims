@@ -48,7 +48,7 @@ def decide(s):
 | **시작하기** — [환경 세팅 · 실행](getting-started.md) | 코드 짜고 로컬에서 바로 붙여보기까지 |
 | **API** — [decide 함수와 스냅샷](api.md) | 스냅샷 필드 하나하나 뜻, 반환값 규칙 |
 | **API** — [Python 봇 특이사항](api-python.md) | Python으로 짤 때만 알아야 할 것 |
-| **예제 봇** — [Minimal](examples/minimal.md) → [Positioning](examples/no-hit-positioning.md) → [Power Hit](examples/power-hit.md) | 뼈대 → 수비형 → 공격형, 왜 이렇게 짰는지 해설 |
+| **예제 봇** — [Minimal](examples/minimal.md) → [Positioning](examples/no-hit-positioning.md) → [Power Hit](examples/power-hit.md) | 뼈대 → 수비형, 왜 이렇게 짰는지 해설 (공격형은 참가자 몫) |
 | **규칙 및 주의사항** — [대회 규칙](rules.md) | 파일명·크기·시간·언어 제약 |
 | **규칙 및 주의사항** — [자주 걸리는 함정](caveats.md) | Y축 방향, hit의 스매시 방향, 파이프라인 지연 등 |
 

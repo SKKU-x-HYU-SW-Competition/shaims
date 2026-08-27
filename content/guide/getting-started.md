@@ -182,4 +182,4 @@ http://localhost:8080
 
 - 봇이 어떤 정보를 받고 어떻게 답해야 하는지: [decide 함수와 스냅샷](api.md)
 - Python 봇 특유의 주의사항: [Python 봇 특이사항](api-python.md)
-- 예제 3종 해설: [Minimal](examples/minimal.md) → [Positioning](examples/no-hit-positioning.md) → [Power Hit](examples/power-hit.md)
+- 예제 해설: [Minimal](examples/minimal.md) → [Positioning](examples/no-hit-positioning.md) → [Power Hit](examples/power-hit.md) *(공격형은 참가자 몫)*

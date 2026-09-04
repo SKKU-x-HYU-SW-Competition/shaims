@@ -34,10 +34,11 @@ async function main() {
     orderBy: { teamName: "asc" },
     select: { id: true, teamName: true },
   });
-  const rows: { groupId: string; homeUserId: string; awayUserId: string }[] = [];
+  const rows: { groupId: string; order: number; homeUserId: string; awayUserId: string }[] = [];
+  let order = 1;
   for (let i = 0; i < teams.length; i++) {
     for (let j = i + 1; j < teams.length; j++) {
-      rows.push({ groupId: group.id, homeUserId: teams[i].id, awayUserId: teams[j].id });
+      rows.push({ groupId: group.id, order: order++, homeUserId: teams[i].id, awayUserId: teams[j].id });
     }
   }
   await prisma.groupMatch.deleteMany({ where: { groupId: group.id } });

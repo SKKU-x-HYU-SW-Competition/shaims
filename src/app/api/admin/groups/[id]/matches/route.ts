@@ -8,6 +8,7 @@ const schema = z.object({
   awayUserId: z.string().min(1),
   homeScore: z.number().int().min(0).max(9999).nullable().optional(),
   awayScore: z.number().int().min(0).max(9999).nullable().optional(),
+  order: z.number().int().min(1).max(9999).nullable().optional(),
 });
 
 export async function POST(
@@ -22,7 +23,7 @@ export async function POST(
     return NextResponse.json({ error: "입력값이 올바르지 않습니다." }, { status: 400 });
   }
 
-  const { homeUserId, awayUserId, homeScore, awayScore } = parsed.data;
+  const { homeUserId, awayUserId, homeScore, awayScore, order: requestedOrder } = parsed.data;
 
   if (homeUserId === awayUserId) {
     return NextResponse.json({ error: "같은 팀끼리 배정할 수 없습니다." }, { status: 400 });
@@ -42,9 +43,31 @@ export async function POST(
   const a = awayScore ?? null;
   const bothSet = h !== null && a !== null;
 
+  let order: number;
+  if (requestedOrder != null) {
+    const dup = await prisma.groupMatch.findFirst({
+      where: { groupId, order: requestedOrder },
+      select: { id: true },
+    });
+    if (dup) {
+      return NextResponse.json(
+        { error: `매치 #${requestedOrder} 은(는) 이미 존재합니다.` },
+        { status: 400 },
+      );
+    }
+    order = requestedOrder;
+  } else {
+    const max = await prisma.groupMatch.aggregate({
+      where: { groupId },
+      _max: { order: true },
+    });
+    order = (max._max.order ?? 0) + 1;
+  }
+
   const match = await prisma.groupMatch.create({
     data: {
       groupId,
+      order,
       homeUserId,
       awayUserId,
       homeScore: h,

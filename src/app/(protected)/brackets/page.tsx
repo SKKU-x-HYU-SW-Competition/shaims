@@ -35,7 +35,7 @@ export default async function BracketsPage() {
             homeUser: { select: { teamName: true } },
             awayUser: { select: { teamName: true } },
           },
-          orderBy: { createdAt: "asc" },
+          orderBy: { order: "asc" },
         },
       },
     }),
@@ -181,8 +181,11 @@ export default async function BracketsPage() {
                             {g.matches.map((m) => (
                               <li
                                 key={m.id}
-                                className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-md border px-3 py-1.5 text-sm"
+                                className="grid grid-cols-[auto_1fr_auto_1fr] items-center gap-2 rounded-md border px-3 py-1.5 text-sm"
                               >
+                                <span className="w-8 shrink-0 text-xs font-semibold text-zinc-500 tabular-nums">
+                                  #{m.order}
+                                </span>
                                 <span className="text-right">
                                   {m.homeUser.teamName}
                                 </span>

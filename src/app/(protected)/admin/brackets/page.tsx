@@ -28,7 +28,7 @@ export default async function AdminBracketsPage() {
             homeUser: { select: { teamName: true } },
             awayUser: { select: { teamName: true } },
           },
-          orderBy: { createdAt: "asc" },
+          orderBy: { order: "asc" },
         },
       },
     }),

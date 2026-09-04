@@ -16,10 +16,21 @@ export async function POST(
   if (!group) return NextResponse.json({ error: "not found" }, { status: 404 });
 
   const teams = group.users;
-  const rows: { groupId: string; homeUserId: string; awayUserId: string }[] = [];
+  const rows: {
+    groupId: string;
+    order: number;
+    homeUserId: string;
+    awayUserId: string;
+  }[] = [];
+  let order = 1;
   for (let i = 0; i < teams.length; i++) {
     for (let j = i + 1; j < teams.length; j++) {
-      rows.push({ groupId: id, homeUserId: teams[i].id, awayUserId: teams[j].id });
+      rows.push({
+        groupId: id,
+        order: order++,
+        homeUserId: teams[i].id,
+        awayUserId: teams[j].id,
+      });
     }
   }
 

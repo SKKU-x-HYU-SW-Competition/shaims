@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 type Team = { id: string; teamName: string };
 type Match = {
   id: string;
+  order: number;
   homeUserId: string;
   awayUserId: string;
   homeScore: number | null;
@@ -158,7 +159,13 @@ export function GroupCard({ group }: { group: Group }) {
             </ul>
           )}
           {group.users.length >= 2 && (
-            <AddMatchForm groupId={group.id} teams={group.users} />
+            <AddMatchForm
+              groupId={group.id}
+              teams={group.users}
+              nextOrder={
+                (group.matches.reduce((m, x) => Math.max(m, x.order), 0) || 0) + 1
+              }
+            />
           )}
         </section>
       </CardContent>
@@ -213,7 +220,10 @@ function MatchRow({ match, disabled }: { match: Match; disabled: boolean }) {
   }
 
   return (
-    <li className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_auto] items-center gap-2 rounded-md border px-3 py-1.5 text-sm">
+    <li className="grid grid-cols-[auto_minmax(0,1fr)_auto_minmax(0,1fr)_auto_auto] items-center gap-2 rounded-md border px-3 py-1.5 text-sm">
+      <span className="w-8 shrink-0 text-xs font-semibold text-zinc-500 tabular-nums">
+        #{match.order}
+      </span>
       <span className="min-w-0 truncate text-right pr-1">{match.homeUser.teamName}</span>
       <div className="flex items-center gap-1">
         <Input
@@ -259,15 +269,18 @@ function MatchRow({ match, disabled }: { match: Match; disabled: boolean }) {
 function AddMatchForm({
   groupId,
   teams,
+  nextOrder,
 }: {
   groupId: string;
   teams: Team[];
+  nextOrder: number;
 }) {
   const router = useRouter();
   const [homeId, setHomeId] = useState("");
   const [awayId, setAwayId] = useState("");
   const [home, setHome] = useState("");
   const [away, setAway] = useState("");
+  const [order, setOrder] = useState("");
   const [busy, setBusy] = useState(false);
   const [, startTransition] = useTransition();
 
@@ -280,6 +293,8 @@ function AddMatchForm({
     }
     const h = home === "" ? null : Number(home);
     const a = away === "" ? null : Number(away);
+    const o = order === "" ? null : Number(order);
+    if (o !== null && (Number.isNaN(o) || o < 1)) return alert("매치번호는 1 이상의 정수여야 합니다.");
     setBusy(true);
     const res = await fetch(`/api/admin/groups/${groupId}/matches`, {
       method: "POST",
@@ -289,6 +304,7 @@ function AddMatchForm({
         awayUserId: awayId,
         homeScore: h,
         awayScore: a,
+        order: o,
       }),
     });
     setBusy(false);
@@ -301,14 +317,25 @@ function AddMatchForm({
     setAwayId("");
     setHome("");
     setAway("");
+    setOrder("");
     startTransition(() => router.refresh());
   }
 
   return (
     <form
       onSubmit={onAdd}
-      className="mt-2 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto] items-center gap-2 rounded-md border border-dashed px-3 py-2 text-sm"
+      className="mt-2 grid grid-cols-[auto_minmax(0,1fr)_auto_minmax(0,1fr)_auto] items-center gap-2 rounded-md border border-dashed px-3 py-2 text-sm"
     >
+      <Input
+        type="number"
+        min={1}
+        value={order}
+        onChange={(e) => setOrder(e.target.value)}
+        disabled={busy}
+        className="h-8 w-14 text-center px-1"
+        placeholder={`#${nextOrder}`}
+        aria-label="매치번호 (선택)"
+      />
       <select
         value={homeId}
         onChange={(e) => setHomeId(e.target.value)}

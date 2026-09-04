@@ -3,6 +3,7 @@ import { ExternalLink, Pencil } from "lucide-react";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
+import { CharCounter } from "@/components/CharCounter";
 
 export const dynamic = "force-dynamic";
 
@@ -75,6 +76,13 @@ export default async function HomePage() {
             ))}
           </div>
         )}
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wide">
+          글자 수 세기(LLM 질문용)
+        </h2>
+        <CharCounter />
       </section>
     </div>
   );

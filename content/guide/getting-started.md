@@ -29,11 +29,11 @@ Python 봇을 짜더라도 **로컬에 Python을 설치할 필요는 없습니�
 원하는 폴더로 이동한 뒤, 아래 명령을 순서대로 입력합니다:
 
 ```bash
-# 저장소를 현재 폴더 아래로 내려받기
-git clone https://github.com/SKKU-x-HYU-SW-Competition/leonyi-volleyball.git
+# 저장소를 현재 폴더 아래로 내려받기(스킬 포함 버전)
+git clone https://github.com/SKKU-x-HYU-SW-Competition/leonyi-volleyball-skill.git
 
 # 프로젝트 폴더로 이동 (이후 모든 명령은 이 폴더 안에서 실행)
-cd leonyi-volleyball
+cd leonyi-volleyball-skill
 
 # 필요한 라이브러리 설치 (인터넷 속도에 따라 1~3분 소요)
 npm install

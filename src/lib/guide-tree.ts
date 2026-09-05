@@ -24,6 +24,7 @@ export const GUIDE_TREE: GuideGroup[] = [
     items: [
       { slug: "api", title: "decide 함수와 스냅샷", file: "api.md" },
       { slug: "api-python", title: "Python 봇 특이사항", file: "api-python.md" },
+      { slug: "skills", title: "스킬 시스템", file: "skills.md" },
     ],
   },
   {
